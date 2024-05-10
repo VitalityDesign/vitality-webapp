@@ -1,6 +1,6 @@
 <script setup>
 import {inject} from 'vue';
-import ToolingIcon from "@/components/icons/IconTooling.vue";
+import {Expand, Fold} from "@element-plus/icons-vue";
 
 const state = inject('isCollapsed');
 
@@ -16,7 +16,7 @@ const handleSelect = (key, keyPath) => {
 
 <template>
   <div :class="['sidebar', state.isCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded']">
-    <div class="nav-logo">
+    <div class="sidebar-scrollbar">
       <el-scrollbar>
         <span>
           <span v-show="!state.isCollapsed">通讯录管理</span>
@@ -49,22 +49,57 @@ const handleSelect = (key, keyPath) => {
         </el-menu>
       </el-scrollbar>
     </div>
-    <el-icon>
-      <Expand v-show="!state.isCollapsed" @click="toggleMenu"/>
-      <Fold v-show="state.isCollapsed" @click="toggleMenu"/>
-    </el-icon>
+    <div class="sidebar-footer">
+      <el-icon class="folder" @click="toggleMenu">
+        <Expand v-show="!state.isCollapsed"/>
+        <Fold v-show="state.isCollapsed"/>
+      </el-icon>
+    </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import "@/style/basics.scss";
+
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
   position: fixed;
-  top: 60px;
   left: 0;
-  width: 200px;
-  height: 100%;
+  height: calc(100vh - $height-header);
   background-color: #f9f9f9;
   padding: 20px;
+}
+
+.sidebar-collapsed {
+  width: 50px;
+}
+
+.sidebar-expanded {
+  width: 200px;
+}
+
+.sidebar-scrollbar {
+  flex-grow: 1;
+}
+
+.sidebar-footer {
+  position: relative;
+  height: $height-aside-footer;
+}
+
+.sidebar-footer .folder {
+  z-index: 100;
+  position: absolute;
+  cursor: pointer;
+  font-size: 18px;
+  color: #000000;
+  margin-left: 12px;
+  width: 30px;
+  height: $height-aside-footer;
+  line-height: 50px;
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {
@@ -95,14 +130,6 @@ const handleSelect = (key, keyPath) => {
       }
     }
   }
-}
-
-.sidebar-collapsed {
-  width: 50px;
-}
-
-.sidebar-expanded {
-  width: 200px;
 }
 
 </style>
