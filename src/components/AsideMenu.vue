@@ -19,12 +19,8 @@ const handleSelect = (key, keyPath) => {
     <div class="sidebar-scrollbar">
       <el-scrollbar>
         <span>
-          <span v-show="!state.isCollapsed">通讯录管理</span>
+          <span v-show="!state.isCollapsed">Overview</span>
         </span>
-        <el-radio-group v-model="state.isCollapsed" style="margin-bottom: 20px;">
-          <i v-show="!state.isCollapsed" class="el-icon-s-fold expandBtn" @click="state.isCollapsed=true"></i>
-          <i v-show="state.isCollapsed" class="el-icon-s-fold shrinkBtn" @click="state.isCollapsed=false"></i>
-        </el-radio-group>
         <el-menu
             class="el-menu-vertical-demo"
             router

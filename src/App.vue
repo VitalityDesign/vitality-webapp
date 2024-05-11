@@ -2,7 +2,7 @@
 import {provide, reactive} from "vue";
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from "@/components/TheWelcome.vue";
-import Menu from "@/components/Menu.vue";
+import Menu from "@/components/AsideMenu.vue";
 
 const state = reactive({
   isCollapsed: false
@@ -23,7 +23,7 @@ provide('isCollapsed', state);
       </div>
     </el-header>
     <el-container class="body-container">
-      <el-aside :class="[state.isCollapsed ? 'aside-shrink' : 'aside-expand']">
+      <el-aside :class="[state.isCollapsed ? 'aside-shrink' : 'aside-expand', 'aside-wrapper']">
         <Menu/>
       </el-aside>
       <div class="main-wrapper">
@@ -76,6 +76,11 @@ provide('isCollapsed', state);
   display: flex;
   flex: 1;
   position: relative;
+}
+
+.aside-wrapper {
+  flex-shrink: 0;
+  height: 100%;
 }
 
 .aside-expand {
