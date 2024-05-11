@@ -50,10 +50,12 @@ const handleSelect = (key, keyPath) => {
       </el-scrollbar>
     </div>
     <div class="sidebar-footer">
-      <el-icon class="folder" @click="toggleMenu">
-        <Expand v-show="!state.isCollapsed"/>
-        <Fold v-show="state.isCollapsed"/>
-      </el-icon>
+      <el-col class="folder-wrapper">
+        <el-icon class="folder" @click="toggleMenu">
+          <Expand v-show="!state.isCollapsed"/>
+          <Fold v-show="state.isCollapsed"/>
+        </el-icon>
+      </el-col>
     </div>
   </div>
 </template>
@@ -69,16 +71,15 @@ const handleSelect = (key, keyPath) => {
   position: fixed;
   left: 0;
   height: calc(100vh - $height-header);
-  background-color: #f9f9f9;
-  padding: 20px;
+  background-color: #e0e4ea;
 }
 
 .sidebar-collapsed {
-  width: 50px;
+  width: $width-aside-collapsed;
 }
 
 .sidebar-expanded {
-  width: 200px;
+  width: $width-aside;
 }
 
 .sidebar-scrollbar {
@@ -87,19 +88,26 @@ const handleSelect = (key, keyPath) => {
 
 .sidebar-footer {
   position: relative;
+  display: flex;
+  align-items: center;
   height: $height-aside-footer;
 }
 
-.sidebar-footer .folder {
-  z-index: 100;
-  position: absolute;
-  cursor: pointer;
-  font-size: 18px;
+.sidebar-footer .folder-wrapper {
+  width: $width-aside-collapsed;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar-footer .folder-wrapper .folder {
+  position: relative;
+  width: $width-aside-icon;
+  height: $height-aside-icon;
   color: #000000;
-  margin-left: 12px;
-  width: 30px;
-  height: $height-aside-footer;
-  line-height: 50px;
+  cursor: pointer;
+  z-index: 100;
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {

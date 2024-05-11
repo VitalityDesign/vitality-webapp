@@ -4,7 +4,6 @@ import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from "@/components/TheWelcome.vue";
 import Menu from "@/components/Menu.vue";
 
-// console.log(isCollapsed.value); // 打印 isCollapsed 的值
 const state = reactive({
   isCollapsed: false
 });
@@ -17,7 +16,7 @@ provide('isCollapsed', state);
   <el-container class="app-container">
     <el-header class="header-container">
       <div class="header-wrapper">
-        <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="50" height="50"/>
+        <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="40" height="40"/>
         <div class="wrapper">
           <HelloWorld msg="gNB"/>
         </div>
