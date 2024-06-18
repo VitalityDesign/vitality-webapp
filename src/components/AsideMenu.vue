@@ -1,6 +1,7 @@
 <script setup>
 import {inject} from 'vue';
-import {Expand, Fold} from "@element-plus/icons-vue";
+import {Clock, DataAnalysis, Document, Expand, Fold, HomeFilled, Odometer, Setting} from "@element-plus/icons-vue";
+import IconDocumentation from "@/components/icons/IconDocumentation.vue";
 
 const state = inject('isCollapsed');
 
@@ -17,30 +18,49 @@ const handleSelect = (key, keyPath) => {
 <template>
   <div :class="['sidebar', state.isCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded']">
     <div class="sidebar-scrollbar">
-      <el-scrollbar>
-        <span>
-          <span v-show="!state.isCollapsed">Overview</span>
-        </span>
+      <el-scrollbar class="scrollbar-style">
         <el-menu
             class="el-menu-vertical-demo"
             router
+            :collapse="state.isCollapsed"
+            :collapse-transition="false"
+            default-active="2"
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b"
-            :collapse="state.isCollapsed"
             @select="handleSelect"
         >
           <el-menu-item index="1">
-            <i class="el-icon-location"></i>
-            <span slot="title">Option 1</span>
+            <icon>
+              <HomeFilled/>
+            </icon>
+            <template #title>Overview</template>
           </el-menu-item>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">Option 2</span>
-          </el-menu-item>
+          <el-sub-menu index="2">
+            <template #title>
+              <el-icon>
+                <Document/>
+              </el-icon>
+              <span>Logging</span>
+            </template>
+            <el-menu-item index="2-1">
+              <template #title>System Log</template>
+            </el-menu-item>
+            <el-menu-item index="2-2">
+              <template #title>Module Log</template>
+            </el-menu-item>
+          </el-sub-menu>
           <el-menu-item index="3">
-            <i class="el-icon-setting"></i>
-            <span slot="title">Option 3</span>
+            <el-icon>
+              <DataAnalysis/>
+            </el-icon>
+            <template #title>Performance</template>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <el-icon>
+              <setting/>
+            </el-icon>
+            <template #title>Settings</template>
           </el-menu-item>
         </el-menu>
       </el-scrollbar>
@@ -59,10 +79,18 @@ const handleSelect = (key, keyPath) => {
 <style scoped lang="scss">
 @import "@/style/basics.scss";
 
+.el-scrollbar {
+  .el-scrollbar__view {
+    height: 100%;
+  }
+}
+
+.scrollbar-style {
+  height: calc(100vh - $height-header - $height-aside-footer);
+}
+
 .sidebar {
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
   justify-content: space-between;
   position: fixed;
   left: 0;
@@ -101,7 +129,7 @@ const handleSelect = (key, keyPath) => {
   position: relative;
   width: $width-aside-icon;
   height: $height-aside-icon;
-  color: #000000;
+  color: var(--vt-c-black-soft);
   cursor: pointer;
   z-index: 100;
 }
@@ -109,6 +137,12 @@ const handleSelect = (key, keyPath) => {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) .el-icon {
+  font-size: 20px; /* Adjust this value as needed */
+  width: 20px;
+  min-height: 20px;
 }
 
 .el-menu-vertical-demo {

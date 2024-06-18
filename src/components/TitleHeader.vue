@@ -11,7 +11,7 @@ defineProps({
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>
-      local manager for
+      local management terminal for
       <a href="https://www.srsran.com/" target="_blank" rel="noopener">srsRAN</a>
     </h3>
   </div>

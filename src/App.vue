@@ -1,8 +1,8 @@
 <script setup>
 import {provide, reactive} from "vue";
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from "@/components/TheWelcome.vue";
-import Menu from "@/components/AsideMenu.vue";
+import TitleHeader from './components/TitleHeader.vue'
+import MainWindow from "@/components/MainWindow.vue";
+import AsideMenu from "@/components/AsideMenu.vue";
 
 const state = reactive({
   isCollapsed: false
@@ -16,19 +16,19 @@ provide('isCollapsed', state);
   <el-container class="app-container">
     <el-header class="header-container">
       <div class="header-wrapper">
-        <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="40" height="40"/>
+        <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="30" height="30"/>
         <div class="wrapper">
-          <HelloWorld msg="gNB"/>
+          <TitleHeader msg="gNB"/>
         </div>
       </div>
     </el-header>
     <el-container class="body-container">
       <el-aside :class="[state.isCollapsed ? 'aside-shrink' : 'aside-expand', 'aside-wrapper']">
-        <Menu/>
+        <AsideMenu/>
       </el-aside>
       <div class="main-wrapper">
         <main>
-          <TheWelcome/>
+          <MainWindow/>
           <!--      <router-view/>-->
         </main>
       </div>
@@ -67,7 +67,7 @@ provide('isCollapsed', state);
 
 .logo {
   display: block;
-  margin: 0 0.5rem 0 0.5rem;
+  margin: 0 0.5rem 0 0.75rem;
 }
 
 .body-container {
