@@ -1,7 +1,6 @@
 <script setup>
 import {provide, reactive} from "vue";
 import TitleHeader from './components/TitleHeader.vue'
-import MainWindow from "@/components/MainWindow.vue";
 import AsideMenu from "@/components/AsideMenu.vue";
 
 const state = reactive({
@@ -28,8 +27,7 @@ provide('isCollapsed', state);
       </el-aside>
       <div class="main-wrapper">
         <main>
-          <MainWindow/>
-          <!--      <router-view/>-->
+          <router-view/>
         </main>
       </div>
     </el-container>

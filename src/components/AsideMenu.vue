@@ -1,6 +1,7 @@
 <script setup>
 import {inject, onMounted, watch} from 'vue';
 import {Clock, DataAnalysis, Document, Expand, Fold, HomeFilled, Odometer, Setting} from "@element-plus/icons-vue";
+import router from '@/router'
 
 const state = inject('isCollapsed');
 
@@ -18,6 +19,7 @@ watch(() => state.isCollapsed, () => {
 
 const handleSelect = (key, keyPath) => {
   console.log(key, keyPath);
+  router.push(key);
 };
 
 function updatePadding() {
@@ -32,12 +34,12 @@ function updatePadding() {
     <div class="sidebar-scrollbar">
       <el-scrollbar class="scrollbar-style">
         <el-menu
-            default-active="2"
+            default-active="/overview"
             :collapse="state.isCollapsed"
             :collapse-transition="false"
             @select="handleSelect"
         >
-          <el-menu-item index="1">
+          <el-menu-item index="/overview">
             <el-icon>
               <HomeFilled/>
             </el-icon>
@@ -45,7 +47,7 @@ function updatePadding() {
               <span>Overview</span>
             </template>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="/performance">
             <el-icon>
               <DataAnalysis/>
             </el-icon>
@@ -53,7 +55,7 @@ function updatePadding() {
               <span>Performance</span>
             </template>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="/settings">
             <el-icon>
               <setting/>
             </el-icon>
@@ -61,19 +63,19 @@ function updatePadding() {
               <span>Settings</span>
             </template>
           </el-menu-item>
-          <el-sub-menu index="4">
+          <el-sub-menu index="/logging">
             <template #title>
               <el-icon>
                 <Document/>
               </el-icon>
               <span>Logging</span>
             </template>
-            <el-menu-item index="4-1">
+            <el-menu-item index="/logging/system">
               <template #title>
                 <span>System Log</span>
               </template>
             </el-menu-item>
-            <el-menu-item index="4-2">
+            <el-menu-item index="/logging/module">
               <template #title>
                 <span>Module Log</span>
               </template>
