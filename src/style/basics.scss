@@ -9,6 +9,25 @@ $width-aside-collapsed: 54px;
 // aside-footer
 $height-aside-footer: 50px;
 
+// aside-padding
+$padding-aside: 20px;
+
 // aside-icon
 $height-aside-icon: 60%;
 $width-aside-icon: 60%;
+$margin-aside-icon: 10px;
+
+// aside-svg
+$height-aside-svg: 25px;
+$width-aside-svg: 25px;
+
+// aside-arrow
+$height-aside-arrow: 15px;
+$width-aside-arrow: 15px;
+
+// aside-title
+$height-aside-title: 56px;
+
+:root {
+  --menu-item-padding-left: 20px;
+}

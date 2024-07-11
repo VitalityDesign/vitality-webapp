@@ -1,7 +1,6 @@
 <script setup>
-import {inject} from 'vue';
+import {inject, onMounted, watch} from 'vue';
 import {Clock, DataAnalysis, Document, Expand, Fold, HomeFilled, Odometer, Setting} from "@element-plus/icons-vue";
-import IconDocumentation from "@/components/icons/IconDocumentation.vue";
 
 const state = inject('isCollapsed');
 
@@ -9,9 +8,22 @@ const toggleMenu = () => {
   state.isCollapsed = !state.isCollapsed;
 };
 
+onMounted(() => {
+  updatePadding();
+});
+
+watch(() => state.isCollapsed, () => {
+  updatePadding();
+});
+
 const handleSelect = (key, keyPath) => {
   console.log(key, keyPath);
 };
+
+function updatePadding() {
+  const paddingLeftValue = state.isCollapsed ? '10px' : '20px';
+  document.documentElement.style.setProperty('--menu-item-padding-left', paddingLeftValue);
+}
 
 </script>
 
@@ -20,48 +32,53 @@ const handleSelect = (key, keyPath) => {
     <div class="sidebar-scrollbar">
       <el-scrollbar class="scrollbar-style">
         <el-menu
-            class="el-menu-vertical-demo"
-            router
+            default-active="2"
             :collapse="state.isCollapsed"
             :collapse-transition="false"
-            default-active="2"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b"
             @select="handleSelect"
         >
           <el-menu-item index="1">
-            <icon>
+            <el-icon>
               <HomeFilled/>
-            </icon>
-            <template #title>Overview</template>
+            </el-icon>
+            <template #title>
+              <span>Overview</span>
+            </template>
           </el-menu-item>
-          <el-sub-menu index="2">
+          <el-menu-item index="2">
+            <el-icon>
+              <DataAnalysis/>
+            </el-icon>
+            <template #title>
+              <span>Performance</span>
+            </template>
+          </el-menu-item>
+          <el-menu-item index="3">
+            <el-icon>
+              <setting/>
+            </el-icon>
+            <template #title>
+              <span>Settings</span>
+            </template>
+          </el-menu-item>
+          <el-sub-menu index="4">
             <template #title>
               <el-icon>
                 <Document/>
               </el-icon>
               <span>Logging</span>
             </template>
-            <el-menu-item index="2-1">
-              <template #title>System Log</template>
+            <el-menu-item index="4-1">
+              <template #title>
+                <span>System Log</span>
+              </template>
             </el-menu-item>
-            <el-menu-item index="2-2">
-              <template #title>Module Log</template>
+            <el-menu-item index="4-2">
+              <template #title>
+                <span>Module Log</span>
+              </template>
             </el-menu-item>
           </el-sub-menu>
-          <el-menu-item index="3">
-            <el-icon>
-              <DataAnalysis/>
-            </el-icon>
-            <template #title>Performance</template>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <el-icon>
-              <setting/>
-            </el-icon>
-            <template #title>Settings</template>
-          </el-menu-item>
         </el-menu>
       </el-scrollbar>
     </div>
@@ -80,6 +97,8 @@ const handleSelect = (key, keyPath) => {
 @import "@/style/basics.scss";
 
 .el-scrollbar {
+  padding-top: 20px;
+
   .el-scrollbar__view {
     height: 100%;
   }
@@ -91,11 +110,10 @@ const handleSelect = (key, keyPath) => {
 
 .sidebar {
   display: flex;
-  justify-content: space-between;
   position: fixed;
-  left: 0;
+  flex-direction: column;
   height: calc(100vh - $height-header);
-  background-color: #e0e4ea;
+  background-color: #f4f9ff;
 }
 
 .sidebar-collapsed {
@@ -134,40 +152,74 @@ const handleSelect = (key, keyPath) => {
   z-index: 100;
 }
 
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
+.el-menu--vertical {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  list-style-type: none;
+  padding-left: 0;
 }
 
-.el-menu-vertical-demo:not(.el-menu--collapse) .el-icon {
-  font-size: 20px; /* Adjust this value as needed */
-  width: 20px;
-  min-height: 20px;
+.el-menu--vertical :deep(ul) {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding-left: 0;
 }
 
-.el-menu-vertical-demo {
-  border: none;
+.el-menu--vertical :deep(span) {
+  display: flex;
+  flex-grow: 1;
+  list-style-type: none;
+  padding-left: 0;
+}
 
-  .el-menu-item {
-    span {
-      color: #909399;
-      font-size: 16px;
-    }
+.el-menu--vertical :deep(.el-icon) {
+  display: flex;
+  align-items: center;
+  margin-right: $margin-aside-icon;
+
+  svg {
+    height: $height-aside-svg; /* Adjust height if necessary */
+    width: $width-aside-svg; /* Adjust width if necessary */
   }
+}
 
-  .el-submenu {
-    span {
-      color: #909399;
-      font-size: 16px;
-    }
+.el-menu--vertical :deep(.el-menu-item) {
+  display: flex;
+  flex-grow: 1;
+  height: $height-aside-title;
+  padding-left: var(--menu-item-padding-left);
+  align-items: center;
+}
 
-    .el-menu-item {
-      span {
-        color: #909399;
-        font-size: 14px;
-      }
-    }
+.el-menu--vertical .el-sub-menu {
+  .el-menu .el-menu-item {
+    padding-left: $padding_aside * 2;
   }
+}
+
+.el-menu--vertical :deep(.el-sub-menu__title) {
+  display: flex;
+  height: $height-aside-title;
+  padding-left: var(--menu-item-padding-left);
+  align-items: center;
+  flex-grow: 1;
+}
+
+.el-menu--vertical :deep(.el-sub-menu__icon-arrow) {
+  height: $height-aside-arrow;
+  width: $width-aside-arrow;
+}
+
+.el-menu--collapse .el-sub-menu__title {
+  span {
+    display: none;
+  }
+}
+
+.el-menu--collapse .el-sub-menu__icon-arrow {
+  display: none;
 }
 
 </style>
