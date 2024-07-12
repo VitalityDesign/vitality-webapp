@@ -4,18 +4,16 @@ const routes = [{
     path: '/', redirect: '/overview'
 }, {
     path: '/', children: [{
-        path: 'overview', component: () => import('@/components/pages/PageOverview.vue')
+        path: 'overview', component: () => import('@/view/overview/Overview.vue')
     }, {
-        path: 'performance', component: () => import('@/components/pages/PagePerformance.vue')
+        path: 'performance', component: () => import('@/view/performance/Performance.vue')
     }, {
-        path: 'settings', component: () => import('@/components/pages/PagePerformance.vue')
+        path: 'settings', component: () => import('@/view/settings/Settings.vue')
     }, {
         path: 'logging', children: [{
-            path: '/', component: () => import('@/components/pages/PagePerformance.vue'),
+            path: 'system', component: () => import('@/view/logging/SystemLog.vue')
         }, {
-            path: 'system', component: () => import('@/components/pages/PagePerformance.vue')
-        }, {
-            path: 'module', component: () => import('@/components/pages/PagePerformance.vue')
+            path: 'module', component: () => import('@/view/logging/ModuleLog.vue')
         }]
     }]
 }]
