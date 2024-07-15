@@ -1,9 +1,7 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 
 const routes = [{
-    path: '/', redirect: '/overview'
-}, {
-    path: '/', children: [{
+    path: '/', component: () => import('@/view/layout/index.vue'), children: [{
         path: 'overview', component: () => import('@/view/overview/Overview.vue')
     }, {
         path: 'performance', component: () => import('@/view/performance/Performance.vue')
@@ -16,7 +14,9 @@ const routes = [{
             path: 'module', component: () => import('@/view/logging/ModuleLog.vue')
         }]
     }]
-}]
+}, {
+    path: '/login', name: 'Login', component: () => import('@/view/login/index.vue')
+},]
 
 const router = createRouter({
     history: createWebHashHistory(), routes

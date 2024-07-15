@@ -1,7 +1,7 @@
 <script setup>
 import {inject, onMounted, watch} from 'vue';
 import {Clock, DataAnalysis, Document, Expand, Fold, HomeFilled, Odometer, Setting} from "@element-plus/icons-vue";
-import router from '@/router'
+import router from '@/router';
 
 const state = inject('isCollapsed');
 
