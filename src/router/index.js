@@ -1,7 +1,9 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 
 const routes = [{
-    path: '/', component: () => import('@/view/layout/index.vue'), children: [{
+    path: '/', name: 'Home', meta: {
+        needLogin: true
+    }, component: () => import('@/view/layout/index.vue'), children: [{
         path: 'overview', component: () => import('@/view/overview/Overview.vue')
     }, {
         path: 'performance', component: () => import('@/view/performance/Performance.vue')
@@ -20,6 +22,19 @@ const routes = [{
 
 const router = createRouter({
     history: createWebHashHistory(), routes
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.needLogin) {
+        const token = localStorage.getItem('token');
+        if (token) {
+            next();
+        } else {
+            next('/login');
+        }
+    } else {
+        next();
+    }
 })
 
 export default router

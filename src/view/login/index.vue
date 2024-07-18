@@ -2,6 +2,8 @@
 
 import logo from '@/assets/logo.svg';
 import {reactive} from 'vue';
+import axios from "axios";
+import router from '@/router';
 
 const login = reactive({
   loginForm: {
@@ -16,11 +18,12 @@ const login = reactive({
 const rules = reactive({
   username: [
     {required: true, message: 'Please input user name', trigger: 'blur'},
-    {min: 3, max: 10, message: 'Length 3-10', trigger: 'blur'}
+    {min: 3, max: 32, message: 'Length 3-10', trigger: 'blur'}
   ],
   password: [
-    {required: true, message: '请输入密码', trigger: 'blur'},
-    {min: 6, max: 15, message: '长度在 6 到 15 个字符的密码', trigger: 'blur'}
+    {required: true, message: 'Please input password', trigger: 'blur'},
+    {min: 6, max: 15, message: 'Password number/letter/special character', trigger: 'blur'},
+    {min: 8, max: 32, message: 'Password 8 <= length <= 32', trigger: 'blur'}
   ],
   code: [
     {required: true, message: 'Input verify code', trigger: 'blur'},
@@ -30,6 +33,17 @@ const rules = reactive({
 
 function onSubmit() {
   console.log('submit');
+  axios.post('/login', login.loginForm).then(res => {
+    console.log(res);
+    if (res.status === 200) {
+      localStorage.setItem('token', res.data.token)
+      router.push({name: "Home"});
+    } else {
+      console.log('login failed');
+    }
+  }).catch(err => {
+    console.log(err);
+  })
 }
 
 </script>

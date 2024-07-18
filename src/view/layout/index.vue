@@ -1,6 +1,5 @@
 <script setup>
 import {provide, reactive} from "vue";
-import TitleHeader from '@/view/layout/TitleHeader.vue'
 import AsideMenu from "@/view/layout/AsideMenu.vue";
 
 const state = reactive({
@@ -13,14 +12,6 @@ provide('isCollapsed', state);
 
 <template>
   <el-container class="app-container">
-    <el-header class="header-container">
-      <div class="header-wrapper">
-        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="30" height="30"/>
-        <div class="wrapper">
-          <TitleHeader msg="gNB"/>
-        </div>
-      </div>
-    </el-header>
     <el-container class="body-container">
       <el-aside :class="[state.isCollapsed ? 'aside-shrink' : 'aside-expand', 'aside-wrapper']">
         <AsideMenu/>
@@ -44,27 +35,10 @@ provide('isCollapsed', state);
   flex-direction: column;
 }
 
-.header-container {
-  height: $height-header;
-}
-
-.header-wrapper {
-  position: fixed;
-  display: flex;
-  place-items: center;
-  padding-right: calc(var(--section-gap) / 2);
-  height: $height-header;
-  width: 100%;
-}
-
-.header-wrapper .wrapper {
-  display: flex;
-  place-items: flex-start;
-  flex-wrap: wrap;
-}
-
 .logo {
   display: block;
+  justify-content: flex-start;
+  width: $width-aside-svg;
   margin: 0 0.5rem 0 0.75rem;
 }
 
