@@ -19,6 +19,6 @@ export const handlers = [// Intercept "GET https://example.com/user" requests...
                 status: 401, statusText: 'Username or password error',
             })
         }
-    }),]
+    })]
 
 export const defaultHandlers = [];

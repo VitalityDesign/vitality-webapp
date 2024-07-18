@@ -31,6 +31,10 @@ const rules = reactive({
   ]
 })
 
+const loginError = reactive({
+  message: ''
+});
+
 function onSubmit() {
   console.log('submit');
   axios.post('/login', login.loginForm).then(res => {
@@ -43,6 +47,11 @@ function onSubmit() {
     }
   }).catch(err => {
     console.log(err);
+    if(err.response && err.response.status === 401) {
+      loginError.message = err.response.statusText;
+    } else {
+      loginError.message = 'An unexpected error occurred';
+    }
   })
 }
 
@@ -95,7 +104,7 @@ function onSubmit() {
               size="small"
           ></el-switch>
         </el-form-item>
-        <el-form-item class="btn-ground">
+        <el-form-item class="btn-ground" :error="loginError.message">
           <el-button type="primary" @click="onSubmit">Login</el-button>
         </el-form-item>
       </el-form>
