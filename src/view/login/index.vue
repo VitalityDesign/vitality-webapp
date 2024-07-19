@@ -2,7 +2,7 @@
 
 import logo from '@/assets/logo.svg';
 import {reactive} from 'vue';
-import axios from "axios";
+import http from '@/utils/request';
 import router from '@/router';
 
 const login = reactive({
@@ -37,13 +37,13 @@ const loginError = reactive({
 
 function onSubmit() {
   console.log('submit');
-  axios.post('/login', login.loginForm).then(res => {
+  http.post('/login', login.loginForm).then(res => {
     console.log(res);
     if (res.status === 200) {
       localStorage.setItem('token', res.data.token)
       router.push({name: "Home"});
     } else {
-      console.log('login failed');
+      loginError.message = res.statusText;
     }
   }).catch(err => {
     console.log(err);
