@@ -1,9 +1,11 @@
 <script setup>
 
 import logo from '@/assets/logo.svg';
-import {reactive} from 'vue';
+import {reactive, ref} from 'vue';
 import http from '@/utils/request';
 import router from '@/router';
+
+const loginFormRef = ref(null)
 
 const login = reactive({
   loginForm: {
@@ -35,19 +37,32 @@ const loginError = reactive({
   message: ''
 });
 
-function onSubmit() {
-  console.log('submit');
-  http.post('/login', login.loginForm).then(res => {
+const onSubmit = async (formRef) => {
+  if (!formRef) return;
+  const result = await formRef.validate((valid, fields) => {
+    if (valid) {
+      console.log('submit')
+      return true
+    } else {
+      loginError.message = 'Please check information'
+      return false
+    }
+  })
+
+  if (!result) {
+    return
+  }
+
+  await http.post('/login', login.loginForm).then(async res => {
     console.log(res);
     if (res.status === 200) {
       localStorage.setItem('token', res.data.token)
-      router.push({name: "Home"});
-    } else {
-      loginError.message = res.statusText;
+      await router.push({name: "Home"});
     }
+    loginError.message = res.statusText;
   }).catch(err => {
     console.log(err);
-    if(err.response && err.response.status === 401) {
+    if (err.response && err.response.status === 401) {
       loginError.message = err.response.statusText;
     } else {
       loginError.message = 'An unexpected error occurred';
@@ -67,7 +82,7 @@ function onSubmit() {
     </el-row>
     <div class="login-card">
       <el-form
-          ref="loginForm"
+          ref="loginFormRef"
           :model="login.loginForm"
           :rules="rules"
           class="loginForm"
@@ -105,7 +120,7 @@ function onSubmit() {
           ></el-switch>
         </el-form-item>
         <el-form-item class="btn-ground" :error="loginError.message">
-          <el-button type="primary" @click="onSubmit">Login</el-button>
+          <el-button type="primary" @click="onSubmit(loginFormRef)">Login</el-button>
         </el-form-item>
       </el-form>
     </div>
