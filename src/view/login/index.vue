@@ -37,34 +37,47 @@ const loginError = reactive({
   message: ''
 });
 
-const onSubmit = async (formRef) => {
-  if (!formRef) return;
-  const result = await formRef.validate((valid, fields) => {
-    if (valid) {
-      console.log('submit')
-      return true
-    } else {
-      loginError.message = 'Please check information'
-      return false
-    }
-  })
-
-  if (!result) {
-    return
+function onException(res) {
+  switch (res.status) {
+    default:
+      loginError.message = res.statusText;
+      break;
+    case 401:
+      loginError.message = res.data.message;
+      break;
   }
+}
 
-  await http.post('/login', login.loginForm).then(async res => {
+function onRequest() {
+  http.post('/login', login.loginForm).then(res => {
     console.log(res);
     if (res.status === 200) {
-      localStorage.setItem('access_token', res.data.access_token)
-      localStorage.setItem('refresh_token', res.data.refresh_token)
-      await router.push({name: "Home"});
+      localStorage.setItem('access_token', res.data.token)
+      localStorage.setItem('refresh_token', res.data.token)
+      router.push({name: "Home"});
     }
-    loginError.message = res.statusText;
+    onException(res);
   }).catch(err => {
-    console.log(err);
-    const response = err.response;
-    loginError.message = response.statusText;
+    const res = err.response;
+    onException(res);
+  })
+}
+
+const onSubmit = async (formRef) => {
+  return new Promise((resolve, reject) => {
+    formRef.validate((valid, fields) => {
+      if (valid) {
+        console.log('submit')
+        resolve();
+      } else {
+        loginError.message = 'Please check information'
+        reject();
+      }
+    })
+  }).then(() => {
+    onRequest();
+  }).catch(err => {
+    console.log(err)
   })
 }
 
