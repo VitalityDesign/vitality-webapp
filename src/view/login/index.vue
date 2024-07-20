@@ -20,11 +20,11 @@ const login = reactive({
 const rules = reactive({
   username: [
     {required: true, message: 'Please input user name', trigger: 'blur'},
-    {min: 3, max: 32, message: 'Length 3-10', trigger: 'blur'}
+    {min: 3, max: 32, message: 'Length 3-32', trigger: 'blur'}
   ],
   password: [
     {required: true, message: 'Please input password', trigger: 'blur'},
-    {min: 6, max: 15, message: 'Password number/letter/special character', trigger: 'blur'},
+    {min: 6, max: 15, message: 'Password number/letter/special character', trigger: 'blur'}, // TODO: add accustomed rule
     {min: 8, max: 32, message: 'Password 8 <= length <= 32', trigger: 'blur'}
   ],
   code: [
@@ -56,17 +56,15 @@ const onSubmit = async (formRef) => {
   await http.post('/login', login.loginForm).then(async res => {
     console.log(res);
     if (res.status === 200) {
-      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('access_token', res.data.access_token)
+      localStorage.setItem('refresh_token', res.data.refresh_token)
       await router.push({name: "Home"});
     }
     loginError.message = res.statusText;
   }).catch(err => {
     console.log(err);
-    if (err.response && err.response.status === 401) {
-      loginError.message = err.response.statusText;
-    } else {
-      loginError.message = 'An unexpected error occurred';
-    }
+    const response = err.response;
+    loginError.message = response.statusText;
   })
 }
 

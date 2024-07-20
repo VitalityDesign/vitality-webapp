@@ -1,10 +1,10 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 
 const routes = [{
-    path: '/', name: 'Home', meta: {
+    path: '/', meta: {
         needLogin: true
     }, component: () => import('@/view/layout/index.vue'), children: [{
-        path: 'overview', component: () => import('@/view/overview/Overview.vue')
+        path: 'overview', name: 'Home', component: () => import('@/view/overview/Overview.vue')
     }, {
         path: 'performance', component: () => import('@/view/performance/Performance.vue')
     }, {
