@@ -30,17 +30,17 @@ http.interceptors.response.use(function (response) {
                 isRefreshing = true
 
                 refreshToken().then(res => {
-                    console.log('刷新token成功')
+                    for (const {config, resolve} of requestQueue) {
+                        resolve(http(config))
+                    }
+                    resolve(res)
                 }).catch(err => {
                     const backUrl = encodeURIComponent(router.currentRoute.fullPath)
                     router.push('/login?back=' + backUrl)
-                    reject(error)
+                    reject(err)
                 })
 
                 isRefreshing = false
-                for (const {config, resolve} of requestQueue) {
-                    resolve(http(config))
-                }
                 requestQueue = [];
             })
         }
@@ -53,16 +53,21 @@ http.interceptors.response.use(function (response) {
 })
 
 const refreshToken = async () => {
-    const {data} = await http.get('/refresh_token', {
-        params: {
-            refresh_token: localStorage.getItem('refresh_token')
-        }
+    return new Promise(async (resolve, reject) => {
+        http.get('/refresh_token', {
+            params: {
+                access_token: localStorage.getItem('access_token'),
+                refresh_token: localStorage.getItem('refresh_token')
+            }
+        }).then(res => {
+            let AuthRefresh = res.data
+            localStorage.setItem('access_token', AuthRefresh.accessToken)
+            localStorage.setItem('refresh_token', AuthRefresh.refreshToken)
+            resolve(res)
+        }).catch((err) => {
+            reject(err)
+        })
     })
-
-    if (data.accessToken && data.refreshToken) {
-        localStorage.setItem('access_token', data.accessToken)
-        localStorage.setItem('refresh_token', data.refreshToken)
-    }
 }
 
 export default http

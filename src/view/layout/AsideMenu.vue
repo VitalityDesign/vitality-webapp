@@ -32,50 +32,50 @@ const handleSelect = (key, keyPath) => {
     </div>
     <el-scrollbar class="scrollbar-style">
       <el-menu
-          default-active="/overview"
+          default-active="/purpose"
           :collapse="state.isCollapsed"
           :collapse-transition="false"
           @select="handleSelect"
       >
-        <el-menu-item index="/overview">
+        <el-menu-item index="/purpose">
           <el-icon>
             <HomeFilled/>
           </el-icon>
           <template #title>
-            <span>Overview</span>
+            <span>Purpose</span>
           </template>
         </el-menu-item>
-        <el-menu-item index="/performance">
+        <el-menu-item index="/model">
           <el-icon>
             <DataAnalysis/>
           </el-icon>
           <template #title>
-            <span>Performance</span>
+            <span>Model</span>
           </template>
         </el-menu-item>
-        <el-menu-item index="/settings">
+        <el-menu-item index="/plan">
           <el-icon>
             <Setting/>
           </el-icon>
           <template #title>
-            <span>Settings</span>
+            <span>Plan</span>
           </template>
         </el-menu-item>
-        <el-sub-menu index="/logging">
+        <el-sub-menu index="/organized">
           <template #title>
             <el-icon>
               <Document/>
             </el-icon>
-            <span>Logging</span>
+            <span>Organized</span>
           </template>
-          <el-menu-item index="/logging/system">
+          <el-menu-item index="/organized/interact">
             <template #title>
-              <span>System Log</span>
+              <span>Interact</span>
             </template>
           </el-menu-item>
-          <el-menu-item index="/logging/module">
+          <el-menu-item index="/organized/diffuse">
             <template #title>
-              <span>Module Log</span>
+              <span>Diffuse</span>
             </template>
           </el-menu-item>
         </el-sub-menu>

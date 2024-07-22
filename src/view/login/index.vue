@@ -11,9 +11,7 @@ const login = reactive({
   loginForm: {
     username: '',
     password: '',
-    code: '',
     remember: false,
-    codeToken: ''
   }
 })
 
@@ -26,10 +24,6 @@ const rules = reactive({
     {required: true, message: 'Please input password', trigger: 'blur'},
     {min: 6, max: 15, message: 'Password number/letter/special character', trigger: 'blur'}, // TODO: add accustomed rule
     {min: 8, max: 32, message: 'Password 8 <= length <= 32', trigger: 'blur'}
-  ],
-  code: [
-    {required: true, message: 'Input verify code', trigger: 'blur'},
-    {min: 4, max: 4, message: 'Four length code', trigger: 'blur'}
   ]
 })
 
@@ -88,7 +82,7 @@ const onSubmit = async (formRef) => {
     <el-row class="title_wrapper">
       <div class="title">
         <el-image :src="logo" class="logo"/>
-        <h1>gNB</h1>
+        <h1>Vitality.AI</h1>
       </div>
     </el-row>
     <div class="login-card">
@@ -114,15 +108,6 @@ const onSubmit = async (formRef) => {
               show-password
           >
           </el-input>
-        </el-form-item>
-        <el-form-item prop="code" class="form-item-code">
-          <el-input
-              v-model="login.loginForm.code"
-              placeholder="code"
-          ></el-input>
-          <div class="code-image">
-            <el-image :src=codeImg class="codeImg"></el-image>
-          </div>
         </el-form-item>
         <el-form-item prop="remember" class="form-item-switch" label="Remember Password">
           <el-switch
