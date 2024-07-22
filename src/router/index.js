@@ -1,19 +1,20 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
+import {DataAnalysis, Document, HomeFilled, MapLocation} from "@element-plus/icons-vue";
 
 const routes = [{
-    path: '/', meta: {
+    path: '', meta: {
         needLogin: true
     }, component: () => import('@/view/layout/index.vue'), children: [{
-        path: 'overview', name: 'Home', component: () => import('@/view/overview/Overview.vue')
+        path: '/Purpose', name: 'Purpose', icon: HomeFilled, component: () => import('@/view/overview/Overview.vue')
     }, {
-        path: 'performance', component: () => import('@/view/performance/Performance.vue')
+        path: '/Model', name: 'Model', icon: DataAnalysis, component: () => import('@/view/performance/Performance.vue')
     }, {
-        path: 'settings', component: () => import('@/view/settings/Settings.vue')
+        path: '/Plan', name: 'Plan', icon: MapLocation, component: () => import('@/view/settings/Settings.vue')
     }, {
-        path: 'logging', children: [{
-            path: 'system', component: () => import('@/view/logging/SystemLog.vue')
+        path: '/Organized', name: 'Organized', icon: Document, children: [{
+            path: 'Interact', name: 'Interact', component: () => import('@/view/logging/SystemLog.vue')
         }, {
-            path: 'module', component: () => import('@/view/logging/ModuleLog.vue')
+            path: 'Diffuse', name: 'Diffuse', component: () => import('@/view/logging/ModuleLog.vue')
         }]
     }]
 }, {

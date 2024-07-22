@@ -16,8 +16,11 @@ const toggleAccount = () => {
 
 const handleSelect = (key, keyPath) => {
   console.log(key, keyPath);
-  router.push(key);
 };
+
+const menuList = router.options.routes[0].children;
+
+console.log(menuList)
 
 </script>
 
@@ -32,53 +35,42 @@ const handleSelect = (key, keyPath) => {
     </div>
     <el-scrollbar class="scrollbar-style">
       <el-menu
-          default-active="/purpose"
+          default-active="0"
+          :router="true"
           :collapse="state.isCollapsed"
           :collapse-transition="false"
           @select="handleSelect"
       >
-        <el-menu-item index="/purpose">
-          <el-icon>
-            <HomeFilled/>
-          </el-icon>
-          <template #title>
-            <span>Purpose</span>
-          </template>
-        </el-menu-item>
-        <el-menu-item index="/model">
-          <el-icon>
-            <DataAnalysis/>
-          </el-icon>
-          <template #title>
-            <span>Model</span>
-          </template>
-        </el-menu-item>
-        <el-menu-item index="/plan">
-          <el-icon>
-            <Setting/>
-          </el-icon>
-          <template #title>
-            <span>Plan</span>
-          </template>
-        </el-menu-item>
-        <el-sub-menu index="/organized">
-          <template #title>
+        <template v-for="(item, index) in menuList" :key="index">
+          <el-menu-item v-if="!item.children" :index="index" :route="item.path">
             <el-icon>
-              <Document/>
+              <component :is="item.icon"></component>
             </el-icon>
-            <span>Organized</span>
-          </template>
-          <el-menu-item index="/organized/interact">
             <template #title>
-              <span>Interact</span>
+              <span>{{ item.name }}</span>
             </template>
           </el-menu-item>
-          <el-menu-item index="/organized/diffuse">
+
+          <el-sub-menu v-else :index="index">
             <template #title>
-              <span>Diffuse</span>
+              <el-icon>
+                <component :is="item.icon"></component>
+              </el-icon>
+              <span>{{ item.name }}</span>
             </template>
-          </el-menu-item>
-        </el-sub-menu>
+            <el-menu-item v-for="(sub, subIndex) in item.children"
+                          :index="index + '-' + subIndex"
+                          :route="item.path + '/' + sub.path"
+            >
+              <el-icon>
+                <component :is="sub.icon"></component>
+              </el-icon>
+              <template #title>
+                <span>{{ sub.name }}</span>
+              </template>
+            </el-menu-item>
+          </el-sub-menu>
+        </template>
       </el-menu>
     </el-scrollbar>
     <div class="sidebar-footer">
@@ -157,6 +149,7 @@ const handleSelect = (key, keyPath) => {
   justify-content: left;
   align-items: center;
   padding-left: var(--gnb-menu-item-padding-left);
+
   .folder {
     cursor: pointer;
     font-size: $width-aside-svg;
@@ -176,6 +169,7 @@ const handleSelect = (key, keyPath) => {
   justify-content: left;
   align-items: center;
   padding-left: var(--gnb-menu-item-padding-left);
+
   .account {
     cursor: pointer;
     font-size: $width-aside-svg;
