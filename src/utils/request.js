@@ -19,38 +19,46 @@ http.interceptors.response.use(function (response) {
 }, async function (error) {
     console.log('响应拦截器', error)
     const {config, response} = error;
-    if (response.status === 401) {
-        if (!config.url.endsWith('/login')) {
-            console.log('错误-401')
-            return new Promise(async (resolve, reject) => {
-                requestQueue.push({config, resolve})
-                if (isRefreshing) {
-                    return
-                }
-                isRefreshing = true
-
-                refreshToken().then(res => {
-                    for (const {config, resolve} of requestQueue) {
-                        resolve(http(config))
-                    }
-                    resolve(res)
-                }).catch(err => {
-                    const backUrl = encodeURIComponent(router.currentRoute.fullPath)
-                    router.push('/login?back=' + backUrl)
-                    reject(err)
-                })
-
-                isRefreshing = false
-                requestQueue = [];
-            })
-        }
-    }
-    if (response.status === 404) {
-        response.statusText = `Server not found 404`;
+    if (!response) {
         return Promise.reject(error)
     }
-    return Promise.reject(error)
+    switch (response.status) {
+        default:
+            return Promise.reject(error);
+        case 401:
+            return Unauthorized(config, response);
+        case 404: {
+            response.statusText = `Server not found 404`;
+            return Promise.reject(error)
+        }
+    }
 })
+
+async function Unauthorized(config, response) {
+    if (!config.url.endsWith('/login')) {
+        return new Promise(async (resolve, reject) => {
+            requestQueue.push({config, resolve})
+            if (isRefreshing) {
+                return
+            }
+            isRefreshing = true
+
+            refreshToken().then(res => {
+                for (const {config, resolve} of requestQueue) {
+                    resolve(http(config))
+                }
+                resolve(res)
+            }).catch(err => {
+                const backUrl = encodeURIComponent(router.currentRoute.fullPath)
+                router.push('/login?back=' + backUrl)
+                reject(err)
+            })
+
+            isRefreshing = false
+            requestQueue = [];
+        })
+    }
+}
 
 const refreshToken = async () => {
     return new Promise(async (resolve, reject) => {

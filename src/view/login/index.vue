@@ -31,7 +31,7 @@ const loginError = reactive({
   message: ''
 });
 
-function onException(res) {
+function onResponse(res) {
   switch (res.status) {
     default:
       loginError.message = res.statusText;
@@ -50,10 +50,13 @@ function onRequest() {
       localStorage.setItem('refresh_token', res.data.token)
       router.push({name: "Home"});
     }
-    onException(res);
+    onResponse(res);
   }).catch(err => {
-    const res = err.response;
-    onException(res);
+    if (!err.response) {
+      loginError.message = err.message;
+      return;
+    }
+    onResponse(err.response);
   })
 }
 
