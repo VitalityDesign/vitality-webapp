@@ -1,34 +1,38 @@
 <script setup>
+import logo from "@/assets/logo.svg";
+import { reactive, ref } from "vue";
+import http from "@/utils/request";
+import router from "@/router";
 
-import logo from '@/assets/logo.svg';
-import {reactive, ref} from 'vue';
-import http from '@/utils/request';
-import router from '@/router';
-
-const loginFormRef = ref(null)
+const loginFormRef = ref(null);
 
 const login = reactive({
   loginForm: {
-    username: '',
-    password: '',
+    username: "",
+    password: "",
     remember: false,
-  }
-})
+  },
+});
 
 const rules = reactive({
   username: [
-    {required: true, message: 'Please input user name', trigger: 'blur'},
-    {min: 3, max: 32, message: 'Length 3-32', trigger: 'blur'}
+    { required: true, message: "Please input user name", trigger: "blur" },
+    { min: 3, max: 32, message: "Length 3-32", trigger: "blur" },
   ],
   password: [
-    {required: true, message: 'Please input password', trigger: 'blur'},
-    {min: 6, max: 15, message: 'Password number/letter/special character', trigger: 'blur'}, // TODO: add accustomed rule
-    {min: 8, max: 32, message: 'Password 8 <= length <= 32', trigger: 'blur'}
-  ]
-})
+    { required: true, message: "Please input password", trigger: "blur" },
+    {
+      min: 6,
+      max: 15,
+      message: "Password number/letter/special character",
+      trigger: "blur",
+    }, // TODO: add accustomed rule
+    { min: 8, max: 32, message: "Password 8 <= length <= 32", trigger: "blur" },
+  ],
+});
 
 const loginError = reactive({
-  message: ''
+  message: "",
 });
 
 function onResponse(res) {
@@ -43,83 +47,93 @@ function onResponse(res) {
 }
 
 function onRequest() {
-  http.post('/login', login.loginForm).then(res => {
-    console.log(res);
-    if (res.status === 200) {
-      localStorage.setItem('access_token', res.data.token)
-      localStorage.setItem('refresh_token', res.data.token)
-      router.push({name: "Home"});
-    }
-    onResponse(res);
-  }).catch(err => {
-    if (!err.response) {
-      loginError.message = err.message;
-      return;
-    }
-    onResponse(err.response);
-  })
+  http
+    .post("/login", login.loginForm)
+    .then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        localStorage.setItem("access_token", res.data.token);
+        localStorage.setItem("refresh_token", res.data.token);
+        router.push({ name: "Home" });
+      }
+      onResponse(res);
+    })
+    .catch((err) => {
+      if (!err.response) {
+        loginError.message = err.message;
+        return;
+      }
+      onResponse(err.response);
+    });
 }
 
 const onSubmit = async (formRef) => {
   return new Promise((resolve, reject) => {
     formRef.validate((valid, fields) => {
       if (valid) {
-        console.log('submit')
+        console.log("submit");
         resolve();
       } else {
-        loginError.message = 'Please check information'
+        loginError.message = "Please check information";
         reject();
       }
-    })
-  }).then(() => {
-    onRequest();
-  }).catch(err => {
-    console.log(err)
+    });
   })
-}
-
+    .then(() => {
+      onRequest();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 </script>
 
 <template>
   <div class="login">
     <el-row class="title_wrapper">
       <div class="title">
-        <el-image :src="logo" class="logo"/>
+        <el-image :src="logo" class="logo" />
         <h1>Vitality.AI</h1>
       </div>
     </el-row>
     <div class="login-card">
       <el-form
-          ref="loginFormRef"
-          :model="login.loginForm"
-          :rules="rules"
-          class="loginForm"
+        ref="loginFormRef"
+        :model="login.loginForm"
+        :rules="rules"
+        class="loginForm"
       >
         <el-form-item prop="username">
           <el-input
-              v-model="login.loginForm.username"
-              placeholder="Name/Email/Phone"
-              prefix-icon="User"
+            v-model="login.loginForm.username"
+            placeholder="Name/Email/Phone"
+            prefix-icon="User"
           >
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
-              v-model="login.loginForm.password"
-              placeholder="Please input password"
-              prefix-icon="Lock"
-              show-password
+            v-model="login.loginForm.password"
+            placeholder="Please input password"
+            prefix-icon="Lock"
+            show-password
           >
           </el-input>
         </el-form-item>
-        <el-form-item prop="remember" class="form-item-switch" label="Remember Password">
+        <el-form-item
+          prop="remember"
+          class="form-item-switch"
+          label="Remember Password"
+        >
           <el-switch
-              v-model="login.loginForm.remember"
-              size="small"
+            v-model="login.loginForm.remember"
+            size="small"
           ></el-switch>
         </el-form-item>
         <el-form-item class="btn-ground" :error="loginError.message">
-          <el-button type="primary" @click="onSubmit(loginFormRef)">Login</el-button>
+          <el-button type="primary" @click="onSubmit(loginFormRef)"
+            >Login</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -127,7 +141,6 @@ const onSubmit = async (formRef) => {
 </template>
 
 <style lang="scss" scoped>
-
 @import "@/style/basics.scss";
 
 .login {
@@ -160,7 +173,6 @@ const onSubmit = async (formRef) => {
   h1 {
     font-size: 50px;
   }
-
 }
 
 .login-card {
@@ -206,5 +218,4 @@ const onSubmit = async (formRef) => {
   justify-content: space-between;
   align-items: center;
 }
-
 </style>

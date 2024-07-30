@@ -1,5 +1,4 @@
 <script setup>
-
 import WelcomeItem from "@/components/WelcomeItem.vue";
 import DocumentationIcon from "@/components/icons/IconDocumentation.vue";
 </script>
@@ -7,16 +6,16 @@ import DocumentationIcon from "@/components/icons/IconDocumentation.vue";
 <template>
   <WelcomeItem>
     <template #icon>
-      <DocumentationIcon/>
+      <DocumentationIcon />
     </template>
     <template #heading>Documentation</template>
 
     Vue’s
-    <a href="https://vuejs.org/" target="_blank" rel="noopener">official documentation</a>
+    <a href="https://vuejs.org/" target="_blank" rel="noopener"
+      >official documentation</a
+    >
     provides you with all information you need to get started.
   </WelcomeItem>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

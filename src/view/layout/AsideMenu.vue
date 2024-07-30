@@ -1,17 +1,25 @@
 <script setup>
-import {inject} from 'vue';
-import {DataAnalysis, Document, Expand, Fold, HomeFilled, Setting, UserFilled} from "@element-plus/icons-vue";
-import router from '@/router';
-import logo from '@/assets/logo.svg';
+import { inject } from "vue";
+import {
+  DataAnalysis,
+  Document,
+  Expand,
+  Fold,
+  HomeFilled,
+  Setting,
+  UserFilled,
+} from "@element-plus/icons-vue";
+import router from "@/router";
+import logo from "@/assets/logo.svg";
 
-const state = inject('isCollapsed');
+const state = inject("isCollapsed");
 
 const toggleMenu = () => {
   state.isCollapsed = !state.isCollapsed;
 };
 
 const toggleAccount = () => {
-  console.log('toggle account');
+  console.log("toggle account");
 };
 
 const handleSelect = (key, keyPath) => {
@@ -20,26 +28,30 @@ const handleSelect = (key, keyPath) => {
 
 const menuList = router.options.routes[0].children;
 
-console.log(menuList)
-
+console.log(menuList);
 </script>
 
 <template>
-  <div :class="['sidebar', state.isCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded']">
+  <div
+    :class="[
+      'sidebar',
+      state.isCollapsed ? 'sidebar-collapsed' : 'sidebar-expanded',
+    ]"
+  >
     <div class="sidebar-header">
       <el-col class="folder-wrapper">
         <el-icon class="folder" @click="toggleMenu">
-          <el-image title="logo" :src=logo class="logo"/>
+          <el-image title="logo" :src="logo" class="logo" />
         </el-icon>
       </el-col>
     </div>
     <el-scrollbar class="scrollbar-style">
       <el-menu
-          default-active="0"
-          :router="true"
-          :collapse="state.isCollapsed"
-          :collapse-transition="false"
-          @select="handleSelect"
+        default-active="0"
+        :router="true"
+        :collapse="state.isCollapsed"
+        :collapse-transition="false"
+        @select="handleSelect"
       >
         <template v-for="(item, index) in menuList" :key="index">
           <el-menu-item v-if="!item.children" :index="index" :route="item.path">
@@ -58,9 +70,10 @@ console.log(menuList)
               </el-icon>
               <span>{{ item.name }}</span>
             </template>
-            <el-menu-item v-for="(sub, subIndex) in item.children"
-                          :index="index + '-' + subIndex"
-                          :route="item.path + '/' + sub.path"
+            <el-menu-item
+              v-for="(sub, subIndex) in item.children"
+              :index="index + '-' + subIndex"
+              :route="item.path + '/' + sub.path"
             >
               <el-icon>
                 <component :is="sub.icon"></component>
@@ -76,7 +89,7 @@ console.log(menuList)
     <div class="sidebar-footer">
       <el-col class="folder-wrapper">
         <el-icon class="account" @click="toggleAccount">
-          <UserFilled/>
+          <UserFilled />
         </el-icon>
       </el-col>
     </div>
@@ -175,5 +188,4 @@ console.log(menuList)
     font-size: $width-aside-svg;
   }
 }
-
 </style>

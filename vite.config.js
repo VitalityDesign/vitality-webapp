@@ -1,26 +1,24 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from "node:url";
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 
-import fs from 'fs'
-import path from 'path'
+import fs from "fs";
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-  ],
+  plugins: [vue()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
   },
   server: {
     open: true,
     https: {
-      cert: fs.readFileSync(path.join(__dirname, 'src/ssl/cert.crt')),
-      key: fs.readFileSync(path.join(__dirname, 'src/ssl/cert.key'))
-    }
-  }
-})
+      cert: fs.readFileSync(path.join(__dirname, "src/ssl/cert.crt")),
+      key: fs.readFileSync(path.join(__dirname, "src/ssl/cert.key")),
+    },
+  },
+});

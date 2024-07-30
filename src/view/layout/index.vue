@@ -1,24 +1,28 @@
 <script setup>
-import {provide, reactive} from "vue";
+import { provide, reactive } from "vue";
 import AsideMenu from "@/view/layout/AsideMenu.vue";
 
 const state = reactive({
-  isCollapsed: false
+  isCollapsed: false,
 });
 
-provide('isCollapsed', state);
-
+provide("isCollapsed", state);
 </script>
 
 <template>
   <el-container class="app-container">
     <el-container class="body-container">
-      <el-aside :class="[state.isCollapsed ? 'aside-shrink' : 'aside-expand', 'aside-wrapper']">
-        <AsideMenu/>
+      <el-aside
+        :class="[
+          state.isCollapsed ? 'aside-shrink' : 'aside-expand',
+          'aside-wrapper',
+        ]"
+      >
+        <AsideMenu />
       </el-aside>
       <div class="main-wrapper">
         <main>
-          <router-view/>
+          <router-view />
         </main>
       </div>
     </el-container>
@@ -73,5 +77,4 @@ main {
   position: relative;
   padding: 0;
 }
-
 </style>

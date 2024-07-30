@@ -1,4 +1,3 @@
-
 // header
 $height-header: 50px;
 
@@ -30,6 +29,8 @@ $width-aside-arrow: 15px;
 $height-aside-title: 56px;
 
 :root {
-  --gnb-menu-item-padding-left: calc((#{$width-aside-collapsed} - #{$width-aside-svg}) / 2);
+  --gnb-menu-item-padding-left: calc(
+    (#{$width-aside-collapsed} - #{$width-aside-svg}) / 2
+  );
   --el-menu-base-level-padding: var(--gnb-menu-item-padding-left);
 }
