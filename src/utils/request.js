@@ -32,7 +32,7 @@ http.interceptors.response.use(
       default:
         return Promise.reject(error);
       case 401:
-        return Unauthorized(config, response);
+        return Unauthorized(config);
       case 404: {
         response.statusText = `Server not found 404`;
         return Promise.reject(error);
@@ -41,9 +41,9 @@ http.interceptors.response.use(
   },
 );
 
-async function Unauthorized(config, response) {
+async function Unauthorized(config) {
   if (!config.url.endsWith("/login")) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       requestQueue.push({ config, resolve });
       if (isRefreshing) {
         return;
@@ -70,7 +70,7 @@ async function Unauthorized(config, response) {
 }
 
 const refreshToken = async () => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     http
       .get("/refresh_token", {
         params: {
@@ -79,9 +79,9 @@ const refreshToken = async () => {
         },
       })
       .then((res) => {
-        let AuthRefresh = res.data;
-        localStorage.setItem("access_token", AuthRefresh.accessToken);
-        localStorage.setItem("refresh_token", AuthRefresh.refreshToken);
+        const { accessToken, refreshToken } = res.data;
+        localStorage.setItem("access_token", accessToken);
+        localStorage.setItem("refresh_token", refreshToken);
         resolve(res);
       })
       .catch((err) => {

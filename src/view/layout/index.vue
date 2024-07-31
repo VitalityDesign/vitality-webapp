@@ -2,6 +2,10 @@
 import { provide, reactive } from "vue";
 import AsideMenu from "@/view/layout/AsideMenu.vue";
 
+defineOptions({
+  name: "VitalityLayout",
+});
+
 const state = reactive({
   isCollapsed: false,
 });

@@ -1,6 +1,10 @@
 <script setup>
 import WelcomeItem from "@/components/WelcomeItem.vue";
-import ToolingIcon from "@/components/icons/IconTooling.vue";
+import ToolingIcon from "@/components/icons/IconTheory.vue";
+
+defineOptions({
+  name: "VitalityTechnology",
+});
 </script>
 
 <template>

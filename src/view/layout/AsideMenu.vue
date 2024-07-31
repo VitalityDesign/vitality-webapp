@@ -1,14 +1,6 @@
 <script setup>
 import { inject } from "vue";
-import {
-  DataAnalysis,
-  Document,
-  Expand,
-  Fold,
-  HomeFilled,
-  Setting,
-  UserFilled,
-} from "@element-plus/icons-vue";
+import { UserFilled } from "@element-plus/icons-vue";
 import router from "@/router";
 import logo from "@/assets/logo.svg";
 
@@ -74,6 +66,7 @@ console.log(menuList);
               v-for="(sub, subIndex) in item.children"
               :index="index + '-' + subIndex"
               :route="item.path + '/' + sub.path"
+              :key="index + '-' + subIndex"
             >
               <el-icon>
                 <component :is="sub.icon"></component>

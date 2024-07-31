@@ -1,6 +1,10 @@
 <script setup>
 import WelcomeItem from "@/components/WelcomeItem.vue";
-import DocumentationIcon from "@/components/icons/IconDocumentation.vue";
+import DocumentationIcon from "@/components/icons/IconTechnology.vue";
+
+defineOptions({
+  name: "VitalitySubject",
+});
 </script>
 
 <template>

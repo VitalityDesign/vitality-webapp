@@ -1,6 +1,10 @@
 <script setup>
-import EcosystemIcon from "@/components/icons/IconEcosystem.vue";
+import EcosystemIcon from "@/components/icons/IconSystem.vue";
 import WelcomeItem from "@/components/WelcomeItem.vue";
+
+defineOptions({
+  name: "VitalitySystem",
+});
 </script>
 
 <template>

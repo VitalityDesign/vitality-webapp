@@ -4,6 +4,10 @@ import { reactive, ref } from "vue";
 import http from "@/utils/request";
 import router from "@/router";
 
+defineOptions({
+  name: "VitalityLogin",
+});
+
 const loginFormRef = ref(null);
 
 const login = reactive({
@@ -46,15 +50,16 @@ function onResponse(res) {
   }
 }
 
-function onRequest() {
+async function onRequest() {
   http
     .post("/login", login.loginForm)
     .then((res) => {
       console.log(res);
       if (res.status === 200) {
-        localStorage.setItem("access_token", res.data.token);
-        localStorage.setItem("refresh_token", res.data.token);
-        router.push({ name: "Home" });
+        const { accessToken, refreshToken } = res.data;
+        localStorage.setItem("access_token", accessToken);
+        localStorage.setItem("refresh_token", refreshToken);
+        router.push({ path: "/Subject" });
       }
       onResponse(res);
     })
@@ -69,7 +74,7 @@ function onRequest() {
 
 const onSubmit = async (formRef) => {
   return new Promise((resolve, reject) => {
-    formRef.validate((valid, fields) => {
+    formRef.validate((valid) => {
       if (valid) {
         console.log("submit");
         resolve();
@@ -132,8 +137,8 @@ const onSubmit = async (formRef) => {
         </el-form-item>
         <el-form-item class="btn-ground" :error="loginError.message">
           <el-button type="primary" @click="onSubmit(loginFormRef)"
-            >Login</el-button
-          >
+            >Login
+          </el-button>
         </el-form-item>
       </el-form>
     </div>

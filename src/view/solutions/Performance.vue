@@ -1,6 +1,10 @@
 <script setup>
-import CommunityIcon from "@/components/icons/IconCommunity.vue";
+import CommunityIcon from "@/components/icons/IconSubject.vue";
 import WelcomeItem from "@/components/WelcomeItem.vue";
+
+defineOptions({
+  name: "VitalityPerformance",
+});
 </script>
 
 <template>
